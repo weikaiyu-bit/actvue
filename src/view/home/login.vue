@@ -82,6 +82,7 @@ export default {
           this.logining = true;
             let datas={alterName:thiz.user.username,alterPassword:thiz.user.password}
         thiz.$axios.post("/alter/user", datas).then(res => {
+              window.localStorage.setItem("name",this.user.username);
         if(res.data.flag==true){
            this.logining = false;
             if (this.user.checked) {
@@ -108,7 +109,6 @@ export default {
         "password" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
     },
     getCookie() {
-      window.console.log("????????????????", document.cookie);
       if (document.cookie.length > 0) {
         var arr = document.cookie.split("; ");
         for (var i = 0; i < arr.length; i++) {

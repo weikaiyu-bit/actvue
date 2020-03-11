@@ -10,14 +10,14 @@ const routes = [
     { path: '/', redirect: '/login', },
     { path: '/login', component: Login, },
     {
-        path: '/home', name: 'home', component: Index.Home,
+        path: '/home', name: 'home', component: Index.Home,meta:{requireAuth:true,},
         redirect: '/welcome',
         children: [
-            { path: '/welcome', name: 'welcome', component: Index.Welcome, },
-            { path: '/productlist', name: 'productlist', component: Product.List, },
-            { path: '/power', name: 'power', component: Category.Power, },
-            { path: '/useManage', name: 'useManage', component: Category.useManage, },
-            { path: '/changePwd', name: 'changePwd', component: Category.ChangePwd, },
+            { path: '/welcome', name: 'welcome', component: Index.Welcome,meta:{requireAuth:true} },
+            { path: '/productlist', name: 'productlist', component: Product.List, meta:{requireAuth:true} },
+            { path: '/power', name: 'power', component: Category.Power, meta:{requireAuth:true} },
+            { path: '/useManage', name: 'useManage', component: Category.useManage, meta:{requireAuth:true} },
+            { path: '/changePwd', name: 'changePwd', component: Category.ChangePwd, meta:{requireAuth:true} },
         ]
     },
 
