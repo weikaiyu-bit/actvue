@@ -71,7 +71,6 @@ export default {
       const thiz=this;
        this.$axios.get('/alter/product/listImage?name=wpimage&id='+thiz.id).then(res=>{
       window.console.log(res);
-
             for(let i=0;i<res.data.length;i++){
              let image={ name :res.data[i].name,url:'http://localhost:8001/static/img/productwpimage/'+res.data[i].id+'.jpg'}
            thiz.wpimage.push(image)
