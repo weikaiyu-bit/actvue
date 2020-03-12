@@ -26,7 +26,9 @@
 
       <el-table-column label="图片">
         <template>
-          <el-image url="/"></el-image>
+          <el-image url="/">
+          
+          </el-image>
         </template>
       </el-table-column>
 
@@ -296,10 +298,7 @@ export default {
       const thiz = this;
       thiz.$refs[formName].validate(valid => {
         if (valid) {
-          const category = { category: { id: parseInt(thiz.id) } };
-          const formdata = { ...this.formLabelAlign, ...category };
-          window.console.log("???", formdata);
-          thiz.$axios.post("/alter/product/add", formdata).then(res => {
+          thiz.$axios.post("/alter/product/add?id="+ thiz.id, this.formLabelAlign).then(res => {
             if (res.data.flag == true) {
               thiz.$message({
                 type: "success",
