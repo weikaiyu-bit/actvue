@@ -40,10 +40,11 @@
       <el-table-column prop="originalPrice" label="原始价格"> </el-table-column>
       <el-table-column prop="promotePrice" label="优惠价格"> </el-table-column>
       <el-table-column prop="stock" label="库存"> </el-table-column>
+      <el-table-column prop="createDate" label="创建时间"> </el-table-column>
       <el-table-column label="图片管理">
-        <template>
-          <el-link href="/welcome" target="_blank">
-            <i class="el-icon-picture-outline"></i
+        <template slot-scope="scope">
+          <el-link target="_blank">
+            <i class="el-icon-picture-outline" @click="image__(scope.row.id)" ></i
           ></el-link>
         </template>
       </el-table-column>
@@ -57,8 +58,8 @@
       </el-table-column>
 
       <el-table-column label="编辑产品">
-        <template>
-          <el-button type="text" size="small">编辑</el-button>
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="get__(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
 
@@ -131,9 +132,44 @@
         <el-col :span="8"></el-col>
       </el-row>
     </div>
+<!--修改产品数据-->
+    <el-dialog title="编辑产品" :visible.sync="dialogFormVisible">
+  <el-form :model="form">
+    <el-form-item label="产品id" :label-width="formLabelWidth">
+      <el-input v-model="form.id" :disabled="true"  autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="产品名称" :label-width="formLabelWidth">
+      <el-input v-model="form.name" autocomplete="off"></el-input>
+    </el-form-item>
+        <el-form-item label="产品小标题" :label-width="formLabelWidth">
+      <el-input v-model="form.subTitle" autocomplete="off"></el-input>
+    </el-form-item>
+        <el-form-item label="产品原价格" :label-width="formLabelWidth">
+      <el-input v-model="form.originalPrice" autocomplete="off"></el-input>
+    </el-form-item>
+        <el-form-item label="优惠价格" :label-width="formLabelWidth">
+      <el-input v-model="form.promotePrice" autocomplete="off"></el-input>
+    </el-form-item>
+        <el-form-item label="库存" :label-width="formLabelWidth">
+      <el-input v-model="form.stock" autocomplete="off"></el-input>
+    </el-form-item>
+    <!--
+     <el-form-item label="产品创建时间" :label-width="formLabelWidth">
+     <el-input v-model="createDate" :disabled="true" autocomplete="off"></el-input>
+     </el-form-item>
+    -->
+
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="update__">确 定</el-button>
+  </div>
+</el-dialog>
   </div>
 </template>
 <script>
+
+import moment from 'moment'
 export default {
   data() {
     return {
@@ -145,6 +181,18 @@ export default {
         originalPrice: "",
         promotePrice: "",
         stock: ""
+      },
+      dialogFormVisible: false, //控制修改产品的弹出表单
+      formLabelWidth: "120px", //控制修改产品的弹出宽度
+      // 产品修改数据
+      form: {
+        id:0,
+        name: "",
+        subTitle: "",
+        originalPrice: "",
+        promotePrice: "",
+        stock: "",
+        // createDate: ""
       },
       rules: {
         name: [
@@ -180,13 +228,30 @@ export default {
       ],
       total: 0,
       id: 0,
-      input2: ""
+      input2: "",
     };
   },
+    computed: {
+    // eslint-disable-next-line vue/return-in-computed-property
+  },
   mounted() {
-    this.list();
+    this.list();    
   },
   methods: {
+    get__(row) {
+      const thiz = this;
+      thiz.dialogFormVisible = true;
+     thiz.form=row;
+    },
+    update__(){
+      const thiz = this;
+      thiz.dialogFormVisible = false;
+      window.console.log("this.form",thiz.form)
+      thiz.$axios.post("/alter/product/update",thiz.form ).then(res => {
+          // thiz.form = res.data.data;
+          window.console.log(res.data.data)
+      });  
+    },
     delete__(id) {
       const thiz = this;
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -195,17 +260,17 @@ export default {
         type: "warning"
       })
         .then(() => {
-       thiz.$axios.get("/alter/product/delete?id=" + id).then(res => {
-        window.console.log(res);
-        if (res.data.flag == true) {
-          thiz.$message({
-            type: "success",
-            message: "产品删除成功!"
+          thiz.$axios.get("/alter/product/delete?id=" + id).then(res => {
+            window.console.log(res);
+            if (res.data.flag == true) {
+              thiz.$message({
+                type: "success",
+                message: "产品删除成功!"
+              });
+              thiz.formLabelAlign = {};
+              thiz.list();
+            }
           });
-          thiz.formLabelAlign = {};
-          thiz.list();
-        }
-      });
         })
         .catch(() => {
           this.$message({
@@ -213,17 +278,18 @@ export default {
             message: "已取消删除"
           });
         });
-
     },
     list() {
       const thiz = this;
       this.id = thiz.$route.query.id;
-      window.console.log("this.id", this.id);
       thiz.$axios
         .get("/alter/product/list?id=" + thiz.id + "&start=" + 0)
         .then(res => {
           thiz.productList = res.data.data.content;
           thiz.total = res.data.data.totalElements;
+      for(let i=0;i<this.productList.length;i++){
+      this.productList[i].createDate= moment(this.productList[i].createDate).format("YYYY-MM-DD");
+      }
         });
     },
     onSubmit__(formName) {
@@ -259,8 +325,16 @@ export default {
         .get("/alter/product/list?id=" + thiz.id + "&start=" + (start - 1))
         .then(res => {
           thiz.productList = res.data.data.content;
+                for(let i=0;i<this.productList.length;i++){
+      this.productList[i].createDate= moment(this.productList[i].createDate).format("YYYY-MM-DD");
+      }
         });
-    }
+    },
+    image__(id){
+            const thiz = this;
+      thiz.$router.push({ name: "image", query: {zid: thiz.id,id:id } });
+    },
+    
   }
 };
 </script>

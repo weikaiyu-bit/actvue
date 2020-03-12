@@ -18,6 +18,7 @@ const routes = [
             { path: '/power', name: 'power', component: Category.Power, meta:{requireAuth:true} },
             { path: '/useManage', name: 'useManage', component: Category.useManage, meta:{requireAuth:true} },
             { path: '/changePwd', name: 'changePwd', component: Category.ChangePwd, meta:{requireAuth:true} },
+            { path: '/image', name: 'image', component: Product.Images, meta:{requireAuth:true} },
         ]
     },
 

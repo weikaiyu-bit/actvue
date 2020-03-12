@@ -1,6 +1,8 @@
 <script>
 import List from "./list";
+import Images from "./images";
 export default {
-  List
+  List,
+  Images
 };
 </script>

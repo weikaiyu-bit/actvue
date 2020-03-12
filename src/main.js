@@ -17,7 +17,7 @@ Vue.prototype.$axios = axios
  
     
     //请求等待超时时间则中
-    timeout: 1500,
+    timeout: 100000,
     //请求后的data处理
     // transformResponse: [function (data) {
     //   window.console.log(data);
