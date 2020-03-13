@@ -1,5 +1,10 @@
 <template>
 <div>
+      <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>产品管理</el-breadcrumb-item>
+    </el-breadcrumb>
+        <div style="margin:10px 10px">
   <el-row :gutter="20">
   <el-col :span="10">
   <el-input placeholder="请输入内容" v-model="input2">
@@ -10,6 +15,7 @@
   <el-button type="primary" @click="show__">新增分类</el-button>
 </el-col>
   </el-row>
+        </div>
     <el-table :data="tableData">
       <el-table-column
         prop="id"
@@ -25,7 +31,9 @@
       label="产品管理"
       >
        <template slot-scope="scope">
-        <el-button type="text" size="small" @click="click__(scope.row)">编辑</el-button>
+        <el-button type="text" size="small" @click="click__(scope.row)">
+          <i class="el-icon-edit"></i>
+        </el-button>
       </template>
       </el-table-column>
 
@@ -33,7 +41,9 @@
       label="分类删除"
       >
       <template slot-scope="scope">
-        <el-button type="text" size="small" @click="delete__(scope.row.id)">删除</el-button>
+        <el-button type="text" size="small" @click="delete__(scope.row.id)">
+          <i class="el-icon-delete"></i>
+        </el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -86,7 +96,9 @@ export default {
                 message: "删除成功!"
               });
               this.list();
-            }
+            }else{
+                    this.$message.error(res.data);  
+              }
           });
         })
         .catch(() => {

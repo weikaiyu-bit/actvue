@@ -17,7 +17,6 @@
           </el-input>
         </el-col>
         <el-col :span="10">
-          <el-button type="primary">新增产品</el-button>
         </el-col>
       </el-row>
     </div>
@@ -46,42 +45,41 @@
       <el-table-column label="图片管理">
         <template slot-scope="scope">
           <el-link target="_blank">
-            <i class="el-icon-picture-outline" @click="image__(scope.row.id)" ></i
+            <i class="el-icon-picture-outline" @click="image__(scope.row)" ></i
           ></el-link>
         </template>
       </el-table-column>
 
-      <el-table-column label="设置属性">
+      <el-table-column label="添加属性">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="property__(scope.row)"
-            >设置</el-button
+            >
+                <i class="el-icon-folder-add"></i></el-button
           >
         </template>
       </el-table-column>
 
       <el-table-column label="编辑产品">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="get__(scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="get__(scope.row)">
+            <i class="el-icon-edit"></i>
+          </el-button>
         </template>
       </el-table-column>
 
       <el-table-column label="分类删除">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="delete__(scope.row.id)"
-            >删除</el-button
+            >
+            <i class="el-icon-delete"></i>
+            </el-button
           >
         </template>
       </el-table-column>
     </el-table>
-    <div style="text-align:center">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        @current-change="handleCurrentChange"
-        :total="total"
-      >
-      </el-pagination>
-    </div>
+  
+      <el-pagination background :page-size="5"    @current-change="handleCurrentChange"    :total="this.total"> </el-pagination>
+
 
     <div style="text-algin:center">
       <el-row>
@@ -296,6 +294,7 @@ export default {
         .then(res => {
           thiz.productList = res.data.data.content;
           thiz.total = res.data.data.totalElements;
+          window.console.log(" thiz.total = res.data.data.totalElements;",   res.data.data.totalElements)
           for (let i = 0; i < this.productList.length; i++) {
             this.productList[i].createDate = moment(
               this.productList[i].createDate
@@ -336,6 +335,7 @@ export default {
         .get("/alter/product/list?id=" + thiz.id + "&start=" + (start - 1))
         .then(res => {
           thiz.productList = res.data.data.content;
+          thiz.total = res.data.data.totalElements;
           for (let i = 0; i < this.productList.length; i++) {
             this.productList[i].createDate = moment(
               this.productList[i].createDate
@@ -343,9 +343,9 @@ export default {
           }
         });
     },
-    image__(id) {
-      const thiz = this;
-      thiz.$router.push({ name: "image", query: { zid: thiz.id, id: id } });
+    image__(row) {
+      const thiz = this;   thiz.$router.push({ name: "image", query: { cname:thiz.$route.query.cname, pname:row.subTitle, zid: thiz.id, id: row.id } });
+   
     }
   }
 };

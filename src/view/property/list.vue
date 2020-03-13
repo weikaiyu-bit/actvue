@@ -4,8 +4,23 @@
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/power' }">{{this.$route.query.cname}}</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/productlist?id='+this.zid+'&cname='+this.$route.query.cname}">{{this.$route.query.pname}}</el-breadcrumb-item>
-      <el-breadcrumb-item>属性设置</el-breadcrumb-item>
+      <el-breadcrumb-item>添加属性</el-breadcrumb-item>
     </el-breadcrumb>
+        <div style="margin:10px 10px">
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <el-input placeholder="请输入内容" v-model="input2">
+            <el-button
+              slot="append"
+              type="primary"
+              icon="el-icon-search"
+            ></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="10">
+        </el-col>
+      </el-row>
+    </div>
   <el-table
     :data="tableData"
     style="width: 100%"
@@ -21,38 +36,34 @@
     >
     </el-table-column>
  <el-table-column
-      label="设置属性值"
+      label="添加属性值"
      >
       <template slot-scope="scope">
-        <el-button @click="handleClick(scope.row)" type="text" size="small">设置</el-button>
+        <el-button @click="addPropertyValue__(scope.row)" type="text" size="small">
+                <i class="el-icon-folder-add"></i>
+        </el-button>
       </template>
     </el-table-column>
  <el-table-column
       label="编辑属性"
      >
       <template slot-scope="scope">
-        <el-button @click="updateProperty(scope.row)" type="text" size="small">编辑</el-button>
+        <el-button @click="updateProperty(scope.row)" type="text" size="small">
+          <i class="el-icon-edit"></i>
+        </el-button>
       </template>
     </el-table-column>
  <el-table-column
       label="删除"
       >
       <template slot-scope="scope">
-        <el-button @click="delete__(scope.row)" type="text" size="small">删除</el-button>
+        <el-button @click="delete__(scope.row)" type="text" size="small">
+          <i class="el-icon-delete"></i>
+        </el-button>
       </template>
     </el-table-column>
   </el-table>  
-
-    <div style="text-align:center">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        @current-change="handleCurrentChange"
-        :total="total"
-      >
-      </el-pagination>
-    </div>
-    
+      <el-pagination background :page-size="5"    @current-change="handleCurrentChange"    :total="this.total"></el-pagination> 
    <div style="text-algin:center">
   <el-row>
         <el-col :span="8"></el-col>
@@ -193,6 +204,10 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    addPropertyValue__(row){
+      const thiz=this;
+      thiz.$router.push({ name: "propertyValue", query: { cname:thiz.$route.query.cname, pname:thiz.$route.query.pname, zid: thiz.zid, id: row.id ,pvname:row.name,pid:thiz.id} });
     },
     updateProperty(params) {
       const thiz = this;

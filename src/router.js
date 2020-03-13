@@ -21,6 +21,7 @@ const routes = [
             { path: '/changePwd', name: 'changePwd', component: Category.ChangePwd, meta:{requireAuth:true} },
             { path: '/image', name: 'image', component: Product.Images, meta:{requireAuth:true} },
             { path: '/property', name: 'property', component: Property.List, meta:{requireAuth:true} },
+            { path: '/propertyValue', name: 'propertyValue', component: Property.PropertyValue, meta:{requireAuth:true} },
             
         ]
     },
