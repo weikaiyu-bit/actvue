@@ -2,12 +2,12 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/power' }">分类管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/productlist?id='+this.zid }">产品管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/power' }">{{this.$route.query.cname}}</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/productlist?id='+this.zid +'&cname='+this.$route.query.cname}">{{this.$route.query.cname}}</el-breadcrumb-item>
       <el-breadcrumb-item>图片管理</el-breadcrumb-item>
     </el-breadcrumb>
   <div style="margin-top:10px;">
-  <el-row :gutter="20">
+  <el-row :gutter="20" >
   <el-col :span="8">
     <el-upload
   class="upload-demo"
@@ -55,45 +55,89 @@ export default {
   data() {
     return {
       zid: 0,
-      id:0,
-      url:{wpurl:'http://localhost:8001/alter/product/images?id='+this.id+'&type=wpimage',dturl:'/alter/product/images?id='+this.id+'&type=dtimage'},
-      wpimage: [ ],//详情图片
-      dtimage: [ ],//轮播图片
+      id: 0,
+      url: {
+        wpurl:
+          "http://localhost:8001/alter/product/images?id=" +
+          this.id +
+          "&type=wpimage",
+        dturl: "/alter/product/images?id=" + this.id + "&type=dtimage"
+      },
+      wpimage: [], //详情图片
+      dtimage: [] //轮播图片
     };
   },
   mounted() {
     this.zid = this.$route.query.zid;
     this.id = this.$route.query.id;
-    this.list();
+    this.wpimage__();
+    this.dtimage__();
   },
   methods: {
-    list(){
-      const thiz=this;
-       this.$axios.get('/alter/product/listImage?name=wpimage&id='+thiz.id).then(res=>{
-      window.console.log(res);
-            for(let i=0;i<res.data.length;i++){
-             let image={ name :res.data[i].name,url:'http://localhost:8001/static/img/productwpimage/'+res.data[i].id+'.jpg'}
-           thiz.wpimage.push(image)
-            }
-        })  
-
-       this.$axios.get('/alter/product/listImage?name=dtimage&id='+thiz.id).then(res=>{
-            for(let i=0;i<res.data.length;i++){
-             let image={ name :res.data[i].name,url:'http://localhost:8001/static/img/productdtimage/'+res.data[i].id+'.jpg'}
-           thiz.dtimage.push(image)
-            }
-        })  
-
+    wpimage__() {
+      const thiz = this;
+      this.$axios
+        .get("/alter/product/listImage?name=wpimage&id=" + thiz.id)
+        .then(res => {
+          window.console.log(res);
+          thiz.wpimage = [];
+          for (let i = 0; i < res.data.length; i++) {
+            let image = {
+              name: res.data[i].id,
+              url:
+                "http://localhost:8001/static/img/productwpimage/" +
+                res.data[i].id +
+                ".jpg"
+            };
+            thiz.wpimage.push(image);
+          }
+        });
     },
+    dtimage__() {
+      const thiz = this;
+      this.$axios
+        .get("/alter/product/listImage?name=dtimage&id=" + thiz.id)
+        .then(res => {
+          thiz.dtimage = [];
+          for (let i = 0; i < res.data.length; i++) {
+            let image = {
+              name: res.data[i].id,
+              url:
+                "http://localhost:8001/static/img/productdtimage/" +
+                res.data[i].id +
+                ".jpg"
+            };
+            thiz.dtimage.push(image);
+          }
+        });
+    },
+
     handleRemove(file, fileList) {
-      window.console.log(file, fileList);
+      window.console.log("file::", file);
+      window.console.log("fileList::", fileList);
+      const thiz = this;
+      thiz.$axios.get("/alter/product/deleteImage/" + file.name).then(res => {
+        if (res.data.flag) {
+          this.$message({
+            type: "success",
+            message: "图片删除成功"
+          });
+        }
+      });
     },
     handlePreview(file) {
-      window.console.log(file);
+      window.location.href = file.url;
     },
-    handleSuccess(res){
-      window.console.log(res);
-
+    handleSuccess(res) {
+      this.$message({
+        type: "success",
+        message: "图片上传成功"
+      });
+      if (res.name === "wpimage") {
+        this.wpimage__();
+      } else {
+        this.dtimage__();
+      }
     }
     // httpRequest(file){
     //   const thiz=this;    window.console.log('aaaaaaaaaaaaaaaa')

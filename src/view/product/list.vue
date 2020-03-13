@@ -2,7 +2,7 @@
   <div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/power' }">分类管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/power' }">{{this.$route.query.cname}}</el-breadcrumb-item>
       <el-breadcrumb-item>产品管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div style="margin:10px 10px">
@@ -21,7 +21,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-table :data="productList">
+    <el-table :data="productList" :highlight-current-row="true">
       <el-table-column prop="id" label="id"> </el-table-column>
 
       <el-table-column label="图片">
@@ -38,7 +38,7 @@
         label="产品名称"
       >
       </el-table-column>
-      <el-table-column prop="subTitle" label="产品小标题"> </el-table-column>
+      <el-table-column prop="subTitle" label="产品标题"> </el-table-column>
       <el-table-column prop="originalPrice" label="原始价格"> </el-table-column>
       <el-table-column prop="promotePrice" label="优惠价格"> </el-table-column>
       <el-table-column prop="stock" label="库存"> </el-table-column>
@@ -53,7 +53,7 @@
 
       <el-table-column label="设置属性">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="click__(scope.row.id)"
+          <el-button type="text" size="small" @click="property__(scope.row)"
             >设置</el-button
           >
         </template>
@@ -94,13 +94,16 @@
             :rules="rules"
             ref="formLabelAlign"
           >
+            <el-form-item label="添加产品" size="medium">
+        <i class="el-icon-circle-plus-outline"></i>
+            </el-form-item >
             <el-form-item label="产品名称" prop="name">
               <el-input
                 v-model="formLabelAlign.name"
                 placeholder="比如：六必居 榨菜 咸菜下饭方便小菜 70g*5袋 中华老字号"
               ></el-input>
             </el-form-item>
-            <el-form-item label="产品小标题" prop="subTitle">
+            <el-form-item label="产品标题" prop="subTitle">
               <el-input
                 v-model="formLabelAlign.subTitle"
                 placeholder="比如：六必居 榨菜"
@@ -143,7 +146,7 @@
     <el-form-item label="产品名称" :label-width="formLabelWidth">
       <el-input v-model="form.name" autocomplete="off"></el-input>
     </el-form-item>
-        <el-form-item label="产品小标题" :label-width="formLabelWidth">
+        <el-form-item label="产品标题" :label-width="formLabelWidth">
       <el-input v-model="form.subTitle" autocomplete="off"></el-input>
     </el-form-item>
         <el-form-item label="产品原价格" :label-width="formLabelWidth">
@@ -170,8 +173,7 @@
   </div>
 </template>
 <script>
-
-import moment from 'moment'
+import moment from "moment";
 export default {
   data() {
     return {
@@ -188,12 +190,12 @@ export default {
       formLabelWidth: "120px", //控制修改产品的弹出宽度
       // 产品修改数据
       form: {
-        id:0,
+        id: 0,
         name: "",
         subTitle: "",
         originalPrice: "",
         promotePrice: "",
-        stock: "",
+        stock: ""
         // createDate: ""
       },
       rules: {
@@ -230,29 +232,29 @@ export default {
       ],
       total: 0,
       id: 0,
-      input2: "",
+      input2: ""
     };
   },
-    computed: {
+  computed: {
     // eslint-disable-next-line vue/return-in-computed-property
   },
   mounted() {
-    this.list();    
+    this.list();
   },
   methods: {
     get__(row) {
       const thiz = this;
       thiz.dialogFormVisible = true;
-     thiz.form=row;
+      thiz.form = row;
     },
-    update__(){
+    update__() {
       const thiz = this;
       thiz.dialogFormVisible = false;
-      window.console.log("this.form",thiz.form)
-      thiz.$axios.post("/alter/product/update",thiz.form ).then(res => {
-          // thiz.form = res.data.data;
-          window.console.log(res.data.data)
-      });  
+      window.console.log("this.form", thiz.form);
+      thiz.$axios.post("/alter/product/update", thiz.form).then(res => {
+        // thiz.form = res.data.data;
+        window.console.log(res.data.data);
+      });
     },
     delete__(id) {
       const thiz = this;
@@ -262,17 +264,22 @@ export default {
         type: "warning"
       })
         .then(() => {
-          thiz.$axios.get("/alter/product/delete?id=" + id).then(res => {
-            window.console.log(res);
-            if (res.data.flag == true) {
-              thiz.$message({
-                type: "success",
-                message: "产品删除成功!"
-              });
-              thiz.formLabelAlign = {};
-              thiz.list();
-            }
-          });
+          thiz.$axios
+            .get("/alter/product/delete?id=" + id)
+            .then(res => {
+              window.console.log(res);
+              if (res.data.flag == true) {
+                thiz.$message({
+                  type: "success",
+                  message: "产品删除成功!"
+                });
+                thiz.formLabelAlign = {};
+                thiz.list();
+              }else{
+                    this.$message.error(res.data);  
+              }
+            })
+
         })
         .catch(() => {
           this.$message({
@@ -289,34 +296,39 @@ export default {
         .then(res => {
           thiz.productList = res.data.data.content;
           thiz.total = res.data.data.totalElements;
-      for(let i=0;i<this.productList.length;i++){
-      this.productList[i].createDate= moment(this.productList[i].createDate).format("YYYY-MM-DD");
-      }
+          for (let i = 0; i < this.productList.length; i++) {
+            this.productList[i].createDate = moment(
+              this.productList[i].createDate
+            ).format("YYYY-MM-DD");
+          }
         });
     },
     onSubmit__(formName) {
       const thiz = this;
       thiz.$refs[formName].validate(valid => {
         if (valid) {
-          thiz.$axios.post("/alter/product/add?id="+ thiz.id, this.formLabelAlign).then(res => {
-            if (res.data.flag == true) {
-              thiz.$message({
-                type: "success",
-                message: "产品新增成功!"
-              });
-              thiz.formLabelAlign = {};
-              thiz.list();
-            }
-          });
+          thiz.$axios
+            .post("/alter/product/add?id=" + thiz.id, this.formLabelAlign)
+            .then(res => {
+              if (res.data.flag == true) {
+                thiz.$message({
+                  type: "success",
+                  message: "产品新增成功!"
+                });
+                thiz.formLabelAlign = {};
+                thiz.list();
+              }
+            });
         }
       });
     },
     handleClick(row) {
       window.console.log(row);
     },
-    click__(index) {
+    property__(row) {
       const thiz = this;
-      thiz.$router.push({ name: "productlist", query: { index } });
+      // 路由query传参
+      thiz.$router.push({ name: "property", query: { cname:thiz.$route.query.cname, pname:row.subTitle, zid: thiz.id, id: row.id } });
     },
     handleCurrentChange(start) {
       const thiz = this;
@@ -324,16 +336,17 @@ export default {
         .get("/alter/product/list?id=" + thiz.id + "&start=" + (start - 1))
         .then(res => {
           thiz.productList = res.data.data.content;
-                for(let i=0;i<this.productList.length;i++){
-      this.productList[i].createDate= moment(this.productList[i].createDate).format("YYYY-MM-DD");
-      }
+          for (let i = 0; i < this.productList.length; i++) {
+            this.productList[i].createDate = moment(
+              this.productList[i].createDate
+            ).format("YYYY-MM-DD");
+          }
         });
     },
-    image__(id){
-            const thiz = this;
-      thiz.$router.push({ name: "image", query: {zid: thiz.id,id:id } });
-    },
-    
+    image__(id) {
+      const thiz = this;
+      thiz.$router.push({ name: "image", query: { zid: thiz.id, id: id } });
+    }
   }
 };
 </script>

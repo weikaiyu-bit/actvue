@@ -25,7 +25,7 @@
       label="产品管理"
       >
        <template slot-scope="scope">
-        <el-button type="text" size="small" @click="click__(scope.row.id)">编辑</el-button>
+        <el-button type="text" size="small" @click="click__(scope.row)">编辑</el-button>
       </template>
       </el-table-column>
 
@@ -105,9 +105,10 @@ export default {
     handleClick(row) {
       window.console.log(row);
     },
-    click__(id) {
+    click__(row) {
       const thiz = this;
-      thiz.$router.push({ name: "productlist", query: { id } });
+      window.console.log("rowrow",row)
+      thiz.$router.push({ name: "productlist", query: { id:row.id,cname:row.name } });
     },
     off__() {
       this.dialogVisible = false;

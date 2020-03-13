@@ -20,11 +20,11 @@ const fatherAside = [
     },
     {
         id: "2",
-        name: "权限管理",
+        name: "数据管理",
         sonAside: [
             { id: "2-1", name: "分类管理", path: 'power' },
             { id: "2-2", name: "修改密码", path: 'changePwd' },
-            { id: "2-3", name: "产品管理", path: 'useManage' },
+            { id: "2-3", name: "权限管理", path: 'useManage' },
         ]
     },
 ]
