@@ -119,7 +119,7 @@ export default {
       thiz.$axios.get("/alter/product/deleteImage/" + file.name).then(res => {
         if (res.data.flag) {
           this.$message({
-            type: "success",
+            type: "warning",
             message: "图片删除成功"
           });
         }

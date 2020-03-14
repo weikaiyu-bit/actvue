@@ -82,9 +82,9 @@
 
 
     <div style="text-algin:center">
-      <el-row>
-        <el-col :span="8"></el-col>
-        <el-col :span="8" :offset="8">
+  <el-row>
+        <el-col :span="7"></el-col>
+         <el-col :span="9" :offset="7">
           <el-form
             :label-position="labelPosition"
             label-width="80px"
@@ -132,7 +132,7 @@
             </el-form-item>
           </el-form>
         </el-col>
-        <el-col :span="8"></el-col>
+        <el-col :span="7"></el-col>
       </el-row>
     </div>
 <!--修改产品数据-->

@@ -65,9 +65,10 @@
   </el-table>  
       <el-pagination background :page-size="5"    @current-change="handleCurrentChange"    :total="this.total"></el-pagination> 
    <div style="text-algin:center">
+
   <el-row>
-        <el-col :span="8"></el-col>
-         <el-col :span="8" :offset="8">
+        <el-col :span="7"></el-col>
+         <el-col :span="9" :offset="7">
      <el-form
             :label-position="labelPosition"
             label-width="80px"
@@ -97,7 +98,7 @@
             </el-form-item>
           </el-form>
           </el-col>        
-          <el-col :span="8"></el-col>
+          <el-col :span="7"></el-col>
           </el-row>
    </div>
 
@@ -127,6 +128,7 @@ export default {
       id: 0,
       zid: 0,
       total: 0,
+      input2:'',
       rules: {
         name: [
           {
