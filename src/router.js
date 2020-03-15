@@ -5,6 +5,7 @@ import Index from '@/view/home/index.vue'
 import Product from '@/view/product/index.vue'
 import Category from '@/view/category/index.vue'
 import Property from '@/view/property/index.vue'
+import CProperty from '@/view/cproperty/index.vue'
 // import Olist from '@/view/home/olist.vue'
 Vue.use(Router);
 const routes = [
@@ -22,8 +23,10 @@ const routes = [
             { path: '/image', name: 'image', component: Product.Images, meta:{requireAuth:true} },
             { path: '/property', name: 'property', component: Property.List, meta:{requireAuth:true} },
             { path: '/propertyValue', name: 'propertyValue', component: Property.PropertyValue, meta:{requireAuth:true} },
+            { path: '/cproperty', name: 'cproperty', component: CProperty.List, meta:{requireAuth:true} },
+            { path: '/cvalue', name: 'cvalue', component: CProperty.Cvalue, meta:{requireAuth:true} },
             
-        ]
+                  ]
     },
 
 ]

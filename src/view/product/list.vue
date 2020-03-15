@@ -58,6 +58,14 @@
           >
         </template>
       </el-table-column>
+      <el-table-column label="添加参数值">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="cpropertyvalue__(scope.row)"
+            >
+                <i class="el-icon-folder-add"></i></el-button
+          >
+        </template>
+      </el-table-column>
 
       <el-table-column label="编辑产品">
         <template slot-scope="scope">
@@ -237,6 +245,7 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
   },
   mounted() {
+   
     this.list();
   },
   methods: {
@@ -344,9 +353,14 @@ export default {
         });
     },
     image__(row) {
-      const thiz = this;   thiz.$router.push({ name: "image", query: { cname:thiz.$route.query.cname, pname:row.subTitle, zid: thiz.id, id: row.id } });
-   
-    }
+      const thiz = this; 
+      this.$router.push({ name: "image", query: { cname:thiz.$route.query.cname, pname:row.subTitle, zid: thiz.id, id: row.id } });
+    },
+cpropertyvalue__(row){  
+      const thiz = this; 
+     thiz.$router.push({ name: "cvalue", query: { id:row.id} });
+  
+}
   }
 };
 </script>

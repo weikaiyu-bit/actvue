@@ -38,6 +38,16 @@
       </el-table-column>
 
       <el-table-column
+      label="分类参数 "
+      >
+       <template slot-scope="scope">
+        <el-button type="text" size="small" @click="cproperty__(scope.row.id)">
+          <i class="el-icon-edit"></i>
+        </el-button>
+      </template>
+      </el-table-column>
+
+      <el-table-column
       label="分类删除"
       >
       <template slot-scope="scope">
@@ -81,6 +91,9 @@ export default {
     this.list();
   },
   methods: {
+    cproperty__(id){  
+  this.$router.push({ name: "cproperty", query: { id } });
+    },
     delete__(id) {
       const thiz = this;
       this.$confirm("确认删除？", "提示", {

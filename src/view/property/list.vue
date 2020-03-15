@@ -164,6 +164,13 @@ export default {
     this.zid = this.$route.query.zid;
     this.id = this.$route.query.id;
     this.list();
+         const thiz = this;
+      thiz.$axios
+        .get("/alter/products/cpropertyValues?id=" + thiz.id )
+        .then(res => {
+          window.console.log("caocaocaocaocaocaocaocaocaocaocaocaocaocaocaocao", res);
+        });  
+
   },
   methods: {
     list() {
