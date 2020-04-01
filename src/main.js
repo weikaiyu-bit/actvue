@@ -14,6 +14,7 @@ Vue.prototype.$axios = axios
   .create({
     //请求前处理数据
     baseURL: 'http://localhost:8001',
+    // baseURL: 'http://andwky.cn:8001',
  
     
     //请求等待超时时间则中

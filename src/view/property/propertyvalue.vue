@@ -31,6 +31,7 @@
     >
       <el-table-column prop="id" label="id"> </el-table-column>
       <el-table-column prop="value" label="属性值名称"> </el-table-column>
+      <el-table-column prop="price" label="属性价格"> </el-table-column>
 
       <el-table-column label="编辑属性值">
         <template slot-scope="scope">
@@ -64,6 +65,9 @@
     <el-form-item label="属性值名称" :label-width="formLabelWidth">
       <el-input v-model="form.value" autocomplete="off"></el-input>
     </el-form-item>
+    <el-form-item label="属性值价格" :label-width="formLabelWidth">
+      <el-input v-model="form.price" autocomplete="off"></el-input>
+    </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -78,7 +82,7 @@
             :label-position="labelPosition"
             label-width="80px"
             :model="formLabelAlign"
-            :rules="rules"
+            :rules="rules2"
             ref="formLabelAlign"
           >
             <el-form-item label="添加属性值" size="medium">
@@ -94,6 +98,12 @@
               <el-input
                 v-model="formLabelAlign.value"
                 placeholder="例：37码 -->鞋子(产品)->尺码(属性)->37码(属性值)"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="属性价格" prop="name">
+              <el-input
+                v-model="formLabelAlign.price"
+                placeholder=""
               ></el-input>
             </el-form-item>
             <el-form-item>
@@ -118,19 +128,21 @@ export default {
       id: 0,
       total: 0,
       input2: "",
-      rules: {
+      rules2: {
         value: [
           {
             required: true,
-            message: "输入产品详细名称不能为空",
+            message: "请输入您的帐户",
             trigger: "blur"
           }
-        ]
+        ],
+
       },
       tableData: [
         {
           id: 0,
-          value: ""
+          value: "",
+          price:0
         }
       ],
       dialogFormVisible: false, //控制编辑属性值
@@ -138,7 +150,8 @@ export default {
       // 属性值数据修改
       form: {
         id: 0,
-        value: ""
+        value: "",
+        price: ""
         // createDate: ""
       },
       labelPosition: "right",
@@ -179,6 +192,7 @@ export default {
       const thiz = this;
       thiz.$refs[formName].validate(valid => {
         if (valid) {
+         window. console.log("v....",valid)
           thiz.$axios
             .post("/alter/propertyValue/add?id=" + thiz.id, thiz.formLabelAlign)
             .then(res => {
