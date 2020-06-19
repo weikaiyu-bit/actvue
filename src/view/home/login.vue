@@ -32,15 +32,21 @@
             show-password
           ></el-input>
         </el-form-item>
-        <el-checkbox v-model="user.checked"  style="float:left" class="rememberme">记住密码</el-checkbox>
-          <el-link type="danger" style="float:right">忘记密码?</el-link>
+        <el-checkbox
+          v-model="user.checked"
+          style="float:left"
+          class="rememberme"
+          >记住密码</el-checkbox
+        >
+        <el-link type="danger" style="float:right">忘记密码?</el-link>
         <el-form-item style="width:100%;">
           <el-button
             type="primary"
             style="width:100%;"
             @click="handleSubmit('user')"
             :loading="logining"
-          >登录</el-button>
+            >登录</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -53,22 +59,22 @@ export default {
     return {
       logining: false,
       user: {
-        username: "",
-        password: ""
+        userName: "",
+        password: "",
       },
       rules2: {
         username: [
           {
             required: true,
             message: "请输入您的帐户",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         password: [
-          { required: true, message: "请输入您的密码", trigger: "blur" }
-        ]
+          { required: true, message: "请输入您的密码", trigger: "blur" },
+        ],
       },
-      checked: false
+      checked: false,
     };
   },
   mounted() {
@@ -77,25 +83,32 @@ export default {
   methods: {
     handleSubmit() {
       let thiz = this;
-      this.$refs.user.validate(valid => {
+      this.$refs.user.validate((valid) => {
         if (valid) {
           this.logining = true;
-            let datas={alterName:thiz.user.username,alterPassword:thiz.user.password}
-        thiz.$axios.post("/alter/user", datas).then(res => {
-              window.localStorage.setItem("name",this.user.username);
-        if(res.data.flag==true){
-           this.logining = false;
-            if (this.user.checked) {
-              thiz.setCookie(this.user.username, this.user.password, 7);
+          let datas = {
+            userName: thiz.user.username,
+            alterPassword: thiz.user.password,
+          };
+          thiz.$axios.post("/api/oa/admin/v1/User/login", datas).then((res) => {
+            window.localStorage.setItem("name", this.user.username);
+            if (res.data.flag == true) {
+              this.logining = false;
+              if (this.user.checked) {
+                thiz.setCookie(this.user.username, this.user.password, 7);
+              }
+              thiz.$router.push({
+                name: "home",
+                query: { username: thiz.user.username },
+              });
+            } else {
+              this.logining = false;
+              this.$message.error("账号密码错误", "提示", {
+                confirmButtonText: "ok",
+              });
             }
-            thiz.$router.push({ name: "home" ,    query: {username: thiz.user.username}});
-        }  else {
-            this.logining = false;
-            this.$message.error("账号密码错误", "提示", {
-              confirmButtonText: "ok"
-            });
-          }
-      })} else {
+          });
+        } else {
           return false;
         }
       });
@@ -125,8 +138,8 @@ export default {
     //清除cookie
     clearCookie: function() {
       this.setCookie("", "", -1);
-    }
-  }
+    },
+  },
 };
 </script>
 

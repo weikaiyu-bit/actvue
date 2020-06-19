@@ -13,7 +13,7 @@ Vue.use(VueAxios, axios);
 Vue.prototype.$axios = axios
   .create({
     //请求前处理数据
-    baseURL: 'http://localhost:8001',
+    baseURL: 'http://localhost:8082',
     // baseURL: 'http://andwky.cn:8001',
  
     
@@ -64,8 +64,10 @@ Vue.prototype.$axios = axios
       }
     }
     return Promise.reject(error)
+
   })
 axios.defaults.headers.post['ontent-type']='application/json;charset=UTF-8'
+
 Vue.use(ElementUI);
 new Vue({
   router,
