@@ -24,31 +24,27 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="分类名称"
+        label="请假人"
        >
       </el-table-column>
       <el-table-column
-      label="产品管理"
-      >
-       <template slot-scope="scope">
-        <el-button type="text" size="small" @click="click__(scope.row)">
-          <i class="el-icon-edit"></i>
-        </el-button>
-      </template>
+        prop="day"
+        label="请假天数"
+       >
+      </el-table-column>
+      <el-table-column
+        prop="reason"
+        label="请假原因"
+       >
+      </el-table-column>
+      <el-table-column
+        prop="remarks"
+        label="请假描述"
+       >
       </el-table-column>
 
       <el-table-column
-      label="分类参数 "
-      >
-       <template slot-scope="scope">
-        <el-button type="text" size="small" @click="cproperty__(scope.row.id)">
-          <i class="el-icon-edit"></i>
-        </el-button>
-      </template>
-      </el-table-column>
-
-      <el-table-column
-      label="分类删除"
+      label="操作"
       >
       <template slot-scope="scope">
         <el-button type="text" size="small" @click="delete__(scope.row.id)">
@@ -80,15 +76,12 @@ export default {
       name: "",
       dialogVisible: false,
       tableData: [
-        {
-          id: "2016-05-02",
-          name: "王小虎"
-        }
       ]
     };
   },
   mounted() {
     this.list();
+
   },
   methods: {
     cproperty__(id){  
@@ -123,7 +116,7 @@ export default {
     },
     list() {
       const thiz = this;
-      thiz.$axios("/alter/category/list").then(res => {
+      thiz.$axios("/api/process/leave/findPage?id="+window.localStorage.getItem("id")).then(res => {
         thiz.tableData = res.data.data;
       });
     },

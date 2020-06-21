@@ -54,12 +54,13 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
       logining: false,
       user: {
-        userName: "",
+        username: "",
         password: "",
       },
       rules2: {
@@ -87,27 +88,46 @@ export default {
         if (valid) {
           this.logining = true;
           let datas = {
-            userName: thiz.user.username,
-            alterPassword: thiz.user.password,
+            username: thiz.user.username,
+            password: thiz.user.password,
           };
-          thiz.$axios.post("/api/oa/admin/v1/User/login", datas).then((res) => {
-            window.localStorage.setItem("name", this.user.username);
-            if (res.data.flag == true) {
-              this.logining = false;
-              if (this.user.checked) {
-                thiz.setCookie(this.user.username, this.user.password, 7);
+          thiz.$axios
+            .post("/api/oa/admin/v1/User/login", qs.stringify(datas))
+            .then((res) => {
+              if (res.data.flag == true) {
+               window. console.log("res",res)
+              window.localStorage.setItem("name", this.user.username);
+              window.localStorage.setItem("id", res.data.data.id);
+                this.logining = false;
+                if (this.user.checked) {
+                  thiz.setCookie(this.user.username, this.user.password, 7);
+                }
+                thiz.$router.push({
+                  name: "home",
+                  query: { username: thiz.user.username },
+                });
+              } else {
+                switch (res.data.msg) {
+                  case "用户不存在":
+                    this.logining = false;
+                    this.$message.error(res.data.msg, "提示", {
+                      confirmButtonText: "ok",
+                    });
+                    break;
+                  case "账号密码错误":
+                    this.logining = false;
+                    this.$message.error(res.data.msg, "提示", {
+                      confirmButtonText: "ok",
+                    });
+                    break;
+                  default:
+                    this.logining = false;
+                    this.$message.error("未知错误", "提示", {
+                      confirmButtonText: "ok",
+                    });
+                }
               }
-              thiz.$router.push({
-                name: "home",
-                query: { username: thiz.user.username },
-              });
-            } else {
-              this.logining = false;
-              this.$message.error("账号密码错误", "提示", {
-                confirmButtonText: "ok",
-              });
-            }
-          });
+            });
         } else {
           return false;
         }
