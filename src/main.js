@@ -11,6 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import 'lib-flexible/flexible.js'
 Vue.use(VueAxios, axios);
 axios.defaults.baseURL = '/api'  //关键代码
+// Vue.prototype=this;
 Vue.prototype.$axios = axios
   .create({
     //请求前处理数据

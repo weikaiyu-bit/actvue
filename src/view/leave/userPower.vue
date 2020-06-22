@@ -1,138 +1,126 @@
 <template>
-<div>
-      <el-breadcrumb separator="/">
+  <div>
+    <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>产品管理</el-breadcrumb-item>
     </el-breadcrumb>
-        <div style="margin:10px 10px">
-  <el-row :gutter="20">
-  <el-col :span="10">
-  <el-input placeholder="请输入内容" v-model="input2">
-  <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
-  </el-input>
-  </el-col>
-  <el-col :span="10">
-  <el-button type="primary" @click="show__">新增分类</el-button>
-</el-col>
-  </el-row>
-        </div>
+    <div style="margin:10px 10px">
+      <el-row :gutter="20">
+        <el-col :span="2">
+          <el-button type="primary" @click="show__">新增分类</el-button>
+        </el-col>
+        <el-col :span="10">
+          <el-input placeholder="请输入内容" v-model="input2">
+            <el-button
+              slot="append"
+              type="primary"
+              icon="el-icon-search"
+            ></el-button>
+          </el-input>
+        </el-col>
+      </el-row>
+    </div>
     <el-table :data="tableData">
-      <el-table-column
-        prop="id"
-        label="id"
-       >
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="请假人"
-       >
-      </el-table-column>
-      <el-table-column
-        prop="day"
-        label="请假天数"
-       >
-      </el-table-column>
-      <el-table-column
-        prop="reason"
-        label="请假原因"
-       >
-      </el-table-column>
-      <el-table-column
-        prop="remarks"
-        label="请假描述"
-       >
-      </el-table-column>
+      <el-table-column prop="id" label="id"> </el-table-column>
+      <el-table-column prop="name" label="请假人"> </el-table-column>
+      <el-table-column prop="day" label="请假天数"> </el-table-column>
+      <el-table-column prop="reason" label="请假原因"> </el-table-column>
+      <el-table-column prop="remarks" label="请假描述"> </el-table-column>
 
-      <el-table-column
-      label="操作"
-      >
-      <template slot-scope="scope">
-        <el-button type="text" size="small" @click="delete__(scope.row.id)">
-          <i class="el-icon-delete"></i>
-        </el-button>
-      </template>
-    </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="delete__(scope.row.id)">
+            <i class="el-icon-delete"></i>
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
-
-    <el-dialog
-  title="新增分类"
-  :visible.sync="dialogVisible"
-  width="30%"
-  >
-  <el-input v-model="name"/>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="off__">取 消</el-button>
-    <el-button type="primary" @click="add__">确 定</el-button>
-  </span>
-</el-dialog>
-</div>
+    <!-- <el-dialog title="新增分类" :visible.sync="dialogVisible" width="30%">
+      <el-input v-model="name" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="off__">取 消</el-button>
+        <el-button type="primary" @click="add__">确 定</el-button>
+      </span>
+    </el-dialog> -->
+    <Addmodal :off__="off__" :dialogVisible="this.dialogVisible"/>
+  </div>
 </template>
 <script>
+import Addmodal from './components/addModal.vue'
 export default {
   data() {
     return {
       input2: "",
       name: "",
       dialogVisible: false,
-      tableData: [
-      ]
+      tableData: [],
     };
   },
+  components:{
+    Addmodal,
+  },
+  
   mounted() {
     this.list();
-
   },
   methods: {
-    cproperty__(id){  
-  this.$router.push({ name: "cproperty", query: { id } });
+    cproperty__(id) {
+      this.$router.push({ name: "cproperty", query: { id } });
     },
     delete__(id) {
       const thiz = this;
       this.$confirm("确认删除？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
-          thiz.$axios.get("/alter/category/delete?id=" + id).then(res => {
+          thiz.$axios.get("/alter/category/delete?id=" + id).then((res) => {
             if (res.data.flag == true) {
               thiz.$message({
                 type: "success",
-                message: "删除成功!"
+                message: "删除成功!",
               });
               this.list();
-            }else{
-                    this.$message.error(res.data);  
-              }
+            } else {
+              this.$message.error(res.data);
+            }
           });
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消删除",
           });
         });
     },
     list() {
       const thiz = this;
-      thiz.$axios("/api/process/leave/findPage?id="+window.localStorage.getItem("id")).then(res => {
-        thiz.tableData = res.data.data;
-      });
+      thiz
+        .$axios(
+          "/api/process/leave/findPage?id=" + window.localStorage.getItem("id")
+        )
+        .then((res) => {
+          thiz.tableData = res.data.data;
+        });
     },
     handleClick(row) {
       window.console.log(row);
     },
     click__(row) {
       const thiz = this;
-      window.console.log("rowrow",row)
-      thiz.$router.push({ name: "productlist", query: { id:row.id,cname:row.name } });
+      window.console.log("rowrow", row);
+      thiz.$router.push({
+        name: "productlist",
+        query: { id: row.id, cname: row.name },
+      });
     },
     off__() {
       this.dialogVisible = false;
       this.$message({
         message: "取消操作",
-        type: "warning"
+        type: "warning",
       });
     },
     add__() {
@@ -140,11 +128,11 @@ export default {
       if (this.name.length != 0) {
         thiz.$axios
           .post("/alter/category/add", { name: this.name })
-          .then(res => {
+          .then((res) => {
             if (res.data.flag == true) {
               this.$message({
                 message: "添加成功",
-                type: "success"
+                type: "success",
               });
               this.list();
             }
@@ -156,8 +144,8 @@ export default {
     },
     show__() {
       this.dialogVisible = true;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
