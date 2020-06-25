@@ -30,8 +30,9 @@
 <script>
 export default {
   props: {
-    dialogVisible: {},
-    off__: {},
+    dialogVisible: Boolean,
+    off__: Function,
+    record:Object
   },
 
   data() {
@@ -45,16 +46,38 @@ export default {
         reason: "",
         remarks: "",
         days: "",
-        status: 1,
+        status: "0", //提交审核 0      审核中 1
+        name: window.localStorage.getItem("name"),
+        userId: window.localStorage.getItem("id"),
       },
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
     add__() {
-        this.$store.dispatch("leave/leaveAdd",this.formLabelAlign).then(res=>{
-            console.log("页面拿到了数据",res)
-        })
+      const thiz=this;
+      const id = window.localStorage.getItem("id");
+      this.formLabelAlign.days = parseFloat(this.formLabelAlign.days);
+      this.formLabelAlign.userId = parseInt(this.formLabelAlign.userId);
+      this.$store
+        .dispatch("leave/leaveAdd", this.formLabelAlign)
+        .then((res) => {
+          switch (res.code) {
+            case "SUCCESS":
+              thiz.$message({
+                message: "请假单填写成功",
+                type: "success",
+              });
+              thiz.close();
+              thiz.$store.dispatch("leave/findPage", { id: id });
+              break;
+            case "FAIL":
+              thiz.$message.error("错了哦，这是一条错误消息");
+              thiz.close();
+              break;
+          }
+        });
     },
 
     addOff__() {

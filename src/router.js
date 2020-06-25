@@ -14,6 +14,7 @@ const routes = [
         children: [
             { path: '/welcome', name: 'welcome', component: Index.Welcome, meta: { requireAuth: true } },
             { path: '/power', name: 'power', component: Leave.Power, meta: { requireAuth: true } },
+            { path: '/task', name: 'task', component: Leave.Task, meta: { requireAuth: true } },
         ]
     },
 

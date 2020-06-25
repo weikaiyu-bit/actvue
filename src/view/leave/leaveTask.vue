@@ -20,38 +20,18 @@
         </el-col>
       </el-row>
     </div>
-    <el-table :data="this.tableData">
+    <el-table :data="this.tasks">
       <el-table-column prop="id" label="id"> </el-table-column>
-      <el-table-column prop="name" label="请假人"> </el-table-column>
-      <el-table-column prop="days" label="请假天数"> </el-table-column>
-      <el-table-column prop="reason" label="请假原因"> </el-table-column>
+      <el-table-column prop="assignee" label="任务名称"> </el-table-column>
+      <el-table-column prop="name" label="处理人"> </el-table-column>
+      <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column prop="remarks" label="请假描述"> </el-table-column>
-      <el-table-column prop="createData" label="申请时间"> </el-table-column>
-      <el-table-column prop="status" label="状态">
-        <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.status == '0'"
-            >初始化录入</el-tag
-          >
-          <el-tag type="warning" v-else-if="scope.row.status == '1'"
-            >审核中</el-tag
-          >
-        </template>
-      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-tooltip
-            content="提交请假"
-            placement="top"
-            v-if="scope.row.status == '0'"
-          >
-            <el-button type="text" size="small" @click="onRun(scope.row.id)">
-              <i class="el-icon-video-play"></i>
-            </el-button>
-          </el-tooltip>
           <el-divider direction="vertical"></el-divider>
-          <el-tooltip content="删除请假单" placement="top">
-            <el-button type="text" size="small" @click="delete__(scope.row.id)">
-              <i class="el-icon-delete" @click="delete__(scope.row.id)"></i>
+          <el-tooltip content="办理任务" placement="top">
+            <el-button type="text" size="small" @click="show__(scope.row)">
+              办理任务
             </el-button>
           </el-tooltip>
         </template>
@@ -65,11 +45,11 @@
         <el-button type="primary" @click="add__">确 定</el-button>
       </span>
     </el-dialog> -->
-    <AddModal :off__="off__" :dialogVisible="this.dialogVisible" />
+    <AddModal :off__="off__" :dialogVisible="this.dialogVisible" ref="task" />
   </div>
 </template>
 <script>
-import AddModal from "./components/leaveAddModal.vue";
+import AddModal from "./components/TaskaddModal.vue";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -78,6 +58,7 @@ export default {
       name: "",
       dialogVisible: false,
       // tableData: [],
+      record: {},
     };
   },
   components: {
@@ -85,30 +66,13 @@ export default {
   },
   computed: {
     ...mapState({
-      tableData: (state) => state.leave.tableData,
+      tasks: (state) => state.leave.tasks,
     }),
   },
   mounted() {
     this.list();
   },
   methods: {
-    onRun(id) {
-      const thiz = this;
-      this.$store.dispatch("leave/runTime", { id: id }).then((res) => {
-        switch (res.code) {
-          case "SUCCESS":
-            thiz.$message({
-              message: "提交成功，等待审核",
-              type: "success",
-            });
-            thiz.$store.dispatch("leave/findPage", { id: window.localStorage.getItem("id") });
-            break;
-          case "FAIL":
-            thiz.$message.error("提交审核失败");
-            break;
-        }
-      });
-    },
     cproperty__(id) {
       this.$router.push({ name: "cproperty", query: { id } });
     },
@@ -141,8 +105,8 @@ export default {
     },
     list() {
       const thiz = this;
-      const id = window.localStorage.getItem("id");
-      thiz.$store.dispatch("leave/findPage", { id: id });
+      const name = window.localStorage.getItem("name");
+      thiz.$store.dispatch("leave/leavetask", { name: name });
       // thiz
       //   .$axios(
       //     "/api/process/leave/findPage?id=" + window.localStorage.getItem("id")
@@ -165,26 +129,10 @@ export default {
     off__() {
       this.dialogVisible = false;
     },
-    add__() {
-      const thiz = this;
-      if (this.name.length != 0) {
-        thiz.$axios
-          .post("/alter/category/add", { name: this.name })
-          .then((res) => {
-            if (res.data.flag == true) {
-              this.$message({
-                message: "添加成功",
-                type: "success",
-              });
-              this.list();
-            }
-          });
-        this.dialogVisible = false;
-      } else {
-        this.$message.error("请输入新增分类名称");
-      }
-    },
-    show__() {
+
+    show__(record) {
+     this.$refs.task.onRecord(record)
+      // this.$refs.task.onRecord(record);
       this.dialogVisible = true;
     },
   },

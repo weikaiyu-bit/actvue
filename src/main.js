@@ -67,7 +67,7 @@ Vue.prototype.$axios = axios
 
   })
 axios.defaults.headers.post['ontent-type']='application/json;charset=UTF-8'
-
+axios.defaults.withCredentials = true
 Vue.use(ElementUI);
 new Vue({
   router,

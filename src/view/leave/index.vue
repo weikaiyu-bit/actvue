@@ -1,10 +1,10 @@
 <script>
 import ChangePwd from "./changePwd";
 import Power from "./userPower";
-import useManage from "./useManage";
+import Task from "./leaveTask";
 export default {
   ChangePwd,
   Power,
-  useManage
+  Task
 };
 </script>

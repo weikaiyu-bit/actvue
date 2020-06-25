@@ -6,12 +6,18 @@ export default function request(url, payload) {
 
   switch (payload.methods) {
     case 'GET':
-      vm.$axios.get(url, payload.data).then(res => {
-        return res.data;
+      var urlalter = "";
+      for (var k in payload) {
+        urlalter += k + "=" + payload[k] + "&"
+      }
+      urlalter = urlalter.split("GET&")[1];
+      return new Promise((resolve,reject)=>{
+      vm.$axios.get(url + "?" + urlalter.substring(0, urlalter.length - 1)).then(res => {
+        resolve(res.data);
       }).catch(err => {
-        return err;
+        reject(err);
       })
-      break;
+      })
     case 'POST':
       if (payload.formData && payload.formData == 'form') {
         vm.$axios.post(url, qs.stringify(payload.data)).then(res => {
