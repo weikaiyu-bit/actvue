@@ -32,7 +32,39 @@ export function serviceTask(data) {
         methods: 'GET',
         ...data
     })
-
 }
+export function serviceMyTask(data) {
+    return request(`${profix}/listMyTask`, {
+        methods: 'GET',
+        ...data
+    })
+}
+
+
+
+
+export function serviceListInfo(data) {
+    return request(`${profix}/listinfo`, {
+        methods: 'POST',
+        data
+    })
+}
+
+export function serviceCompleteTask(data) {
+    return request(`${profix}/completeTask`, {
+        methods: 'POST',
+        data
+    })
+}
+
+export function serviceClaim(data) {
+    return request(`${profix}/claim`, {
+        methods: 'GET',
+        ...data
+    })
+}
+
+
+
 
 

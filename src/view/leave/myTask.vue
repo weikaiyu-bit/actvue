@@ -20,17 +20,19 @@
         </el-col>
       </el-row>
     </div>
-    <el-table :data="this.tasks">
+    <el-table :data="this.mytask">
       <el-table-column prop="id" label="id"> </el-table-column>
       <el-table-column prop="assignee" label="任务名称"> </el-table-column>
       <el-table-column prop="name" label="处理人"> </el-table-column>
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-popconfirm title="你确定要拾取该任务吗？" @onConfirm="claim__(scope.row.id)">
-            <a href="#" slot="reference" >拾取</a>
-          </el-popconfirm>
           <el-divider direction="vertical"></el-divider>
+          <el-tooltip content="办理任务" placement="top">
+            <el-button type="text" size="small" @click="show__(scope.row)">
+              办理任务
+            </el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -63,19 +65,13 @@ export default {
   },
   computed: {
     ...mapState({
-      tasks: (state) => state.leave.tasks,
+      mytask: (state) => state.leave.mytask,
     }),
   },
   mounted() {
     this.list();
   },
   methods: {
-    claim__(id) {
-
-      this.$store.dispatch("leave/claim",{id:id,name:window.localStorage.getItem("name")}).then((res) => {
-        console.log(res);
-      });
-    },
     cproperty__(id) {
       this.$router.push({ name: "cproperty", query: { id } });
     },
@@ -109,7 +105,7 @@ export default {
     list() {
       const thiz = this;
       const name = window.localStorage.getItem("name");
-      thiz.$store.dispatch("leave/leavetask", { name: name });
+      thiz.$store.dispatch("leave/MyLeaveTask", { name: name });
       // thiz
       //   .$axios(
       //     "/api/process/leave/findPage?id=" + window.localStorage.getItem("id")

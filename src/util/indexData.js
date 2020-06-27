@@ -23,7 +23,8 @@ const fatherAside = [
         name: "请假管理",
         sonAside: [
             { id: "2-1", name: "请假管理", path: 'power' },
-            { id: "2-2", name: "任务管理", path: 'task' },
+            { id: "2-2", name: "拾取任务", path: 'task' },
+            { id: "2-3", name: "个人任务", path: 'mytask' },
         ]
     },
 ]

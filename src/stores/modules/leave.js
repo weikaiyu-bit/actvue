@@ -1,10 +1,16 @@
-import { add, servicerunTime, serviceFindPage, serviceTask } from "@/service/leave";
+import {
+  add, servicerunTime, serviceFindPage,
+  serviceTask, serviceListInfo, serviceCompleteTask,
+  serviceClaim, serviceMyTask
+} from "@/service/leave";
 const state = () => ({
   items: [],
   checkoutStatus: null,
   data: [],
   tableData: [],
-  tasks: []
+  tasks: [],
+  listinfo: [],
+  mytask: []
 })
 
 // getters
@@ -24,6 +30,14 @@ const mutations = {
   },
   leavetask(state, item) {
     state.tasks = item
+  },
+  MyLeaveTask(state, item) {
+    state.mytask = item
+  },
+
+  ListInfo(state, item) {
+
+    state.listinfo = item
   }
 }
 
@@ -51,10 +65,34 @@ const actions = {
     })
   },
 
-  leavetask({ commit },params) {
+  leavetask({ commit }, params) {
     return serviceTask(params).then(res => {
       commit("leavetask", res.data)
       return res
+    })
+  },
+
+  MyLeaveTask({ commit }, params) {
+    return serviceMyTask(params).then(res => {
+      commit("MyLeaveTask", res.data)
+      return res
+    })
+  },
+
+  listinfo({ commit }, params) {
+    return serviceListInfo(params).then(res => {
+      commit("ListInfo", res.data)
+      return res
+    })
+  },
+  completeTask({ commit }, params) {
+    return serviceCompleteTask(params).then(res => {
+      return res;
+    })
+  },
+  claim({ commit }, params) {
+    return serviceClaim(params).then(res => {
+      return res;
     })
   }
 }
