@@ -33,6 +33,9 @@
             >初始化录入</el-tag
           >
           <el-tag type="warning" v-else-if="scope.row.status == '1'"
+            >待提交</el-tag
+          >
+          <el-tag type="danger" v-else-if="scope.row.status == '2'"
             >审核中</el-tag
           >
         </template>
@@ -40,7 +43,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-tooltip
-            content="提交请假"
+            content="启动请假流程"
             placement="top"
             v-if="scope.row.status == '0'"
           >

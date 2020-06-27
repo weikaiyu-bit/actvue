@@ -73,7 +73,7 @@ export default {
     claim__(id) {
 
       this.$store.dispatch("leave/claim",{id:id,name:window.localStorage.getItem("name")}).then((res) => {
-        console.log(res);
+      this.list();
       });
     },
     cproperty__(id) {

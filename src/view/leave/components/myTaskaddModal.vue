@@ -42,19 +42,9 @@
     <el-divider content-position="left">批注流程</el-divider>
     <el-table :data="processInstanceComments">
       <el-table-column prop="id" label="id"> </el-table-column>
-      <el-table-column prop="assignee" label="任务名称"> </el-table-column>
+      <el-table-column prop="fullMessage" label="批注信息"> </el-table-column>
       <el-table-column prop="name" label="处理人"> </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"> </el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-divider direction="vertical"></el-divider>
-          <el-tooltip content="办理任务" placement="top">
-            <el-button type="text" size="small" @click="show__(scope.row)">
-              办理任务
-            </el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
+      <el-table-column prop="time" label="处理时间"> </el-table-column>
     </el-table>
 
     <span slot="footer" class="dialog-footer">
