@@ -29,7 +29,7 @@
       <el-table-column prop="createData" label="申请时间"> </el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.status == '0'"
+          <el-tag  v-if="scope.row.status == '0'"
             >初始化录入</el-tag
           >
           <el-tag type="warning" v-else-if="scope.row.status == '1'"
@@ -37,6 +37,12 @@
           >
           <el-tag type="danger" v-else-if="scope.row.status == '2'"
             >审核中</el-tag
+          >
+          <el-tag type="success" v-else-if="scope.row.status == '3'"
+            >已完成</el-tag
+          >
+          <el-tag type="success" v-else-if="scope.row.status == '4'"
+            >已拒绝请假</el-tag
           >
         </template>
       </el-table-column>
@@ -57,6 +63,11 @@
               <i class="el-icon-delete" @click="delete__(scope.row.id)"></i>
             </el-button>
           </el-tooltip>
+          <el-tooltip content="查看批注信息" placement="top" v-if="!(scope.row.status=='0'||scope.row.status=='1')">
+            <el-button type="text" size="small" @click="listHistory__(scope.row.id)">
+              <i class="el-icon-view" @click="listHistory__(scope.row.id)"></i>
+            </el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -69,10 +80,12 @@
       </span>
     </el-dialog> -->
     <AddModal :off__="off__" :dialogVisible="this.dialogVisible" />
+    <HistoryModal :historyoff__="historyoff__" :historyVisible="this.historyVisible" />
   </div>
 </template>
 <script>
 import AddModal from "./components/leaveAddModal.vue";
+import HistoryModal from "./components/historyModal.vue";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -81,10 +94,12 @@ export default {
       name: "",
       dialogVisible: false,
       // tableData: [],
+      historyVisible:false
     };
   },
   components: {
     AddModal,
+    HistoryModal
   },
   computed: {
     ...mapState({
@@ -168,6 +183,9 @@ export default {
     off__() {
       this.dialogVisible = false;
     },
+    historyoff__(){
+      this.historyVisible=false
+    },
     add__() {
       const thiz = this;
       if (this.name.length != 0) {
@@ -190,6 +208,10 @@ export default {
     show__() {
       this.dialogVisible = true;
     },
+    listHistory__(){
+      this.historyVisible = true;
+
+    }
   },
 };
 </script>

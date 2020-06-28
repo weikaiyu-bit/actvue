@@ -43,7 +43,7 @@
     <el-table :data="processInstanceComments">
       <el-table-column prop="id" label="id"> </el-table-column>
       <el-table-column prop="fullMessage" label="批注信息"> </el-table-column>
-      <el-table-column prop="name" label="处理人"> </el-table-column>
+      <el-table-column prop="userId" label="处理人"> </el-table-column>
       <el-table-column prop="time" label="处理时间"> </el-table-column>
     </el-table>
 
@@ -75,9 +75,9 @@ export default {
         status: "0", //提交审核 0      审核中 1
       },
       record: {},
-      leave: [], //用户请假信息
+      leave: {}, //用户请假信息
       outgoingFlows: [], //连线信息
-      outome:''
+      outome: "",
     };
   },
   mounted() {},
@@ -90,8 +90,26 @@ export default {
      * 4、流程走向信息
      */
     completeTask(params, name) {
-      const data = { leaveId: params.id, taskId: this.record.id, comments: name,outome:this.outome };
+      const thiz=this;
+      const data = {
+        days: this.leave.days,
+        leaveId: params.id,
+        taskId: this.record.id,
+        comments: name,
+        outome: this.outome,
+        name: window.localStorage.getItem("name"),
+      };
       this.$store.dispatch("leave/completeTask", data).then((res) => {
+        if (res.flag == true) {
+          this.dialogVisible = false;
+          
+            thiz.$message({
+              message: "任务处理成功",
+              type: "success",
+            });
+          this.$parent.list();
+
+        }
         console.log("resresresresresresres", res);
       });
     },
