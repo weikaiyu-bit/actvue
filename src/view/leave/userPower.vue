@@ -32,16 +32,16 @@
           <el-tag  v-if="scope.row.status == '0'"
             >初始化录入</el-tag
           >
-          <el-tag type="warning" v-else-if="scope.row.status == '1'"
+          <el-tag type="info" v-else-if="scope.row.status == '1'"
             >待提交</el-tag
           >
-          <el-tag type="danger" v-else-if="scope.row.status == '2'"
+          <el-tag type="warning" v-else-if="scope.row.status == '2'"
             >审核中</el-tag
           >
           <el-tag type="success" v-else-if="scope.row.status == '3'"
             >已完成</el-tag
           >
-          <el-tag type="success" v-else-if="scope.row.status == '4'"
+          <el-tag type="danger" v-else-if="scope.row.status == '4'"
             >已拒绝请假</el-tag
           >
         </template>
@@ -65,7 +65,7 @@
           </el-tooltip>
           <el-tooltip content="查看批注信息" placement="top" v-if="!(scope.row.status=='0'||scope.row.status=='1')">
             <el-button type="text" size="small" @click="listHistory__(scope.row.id)">
-              <i class="el-icon-view" @click="listHistory__(scope.row.id)"></i>
+              <i class="el-icon-view"></i>
             </el-button>
           </el-tooltip>
         </template>
@@ -80,7 +80,7 @@
       </span>
     </el-dialog> -->
     <AddModal :off__="off__" :dialogVisible="this.dialogVisible" />
-    <HistoryModal :historyoff__="historyoff__" :historyVisible="this.historyVisible" />
+    <HistoryModal :historyoff__="historyoff__" :historyVisible="this.historyVisible" ref="history"/>
   </div>
 </template>
 <script>
@@ -110,6 +110,11 @@ export default {
     this.list();
   },
   methods: {
+    listHistory__(id){
+      this.$refs.history.onHistory(id);
+      this.historyVisible = true;
+
+    },
     onRun(id) {
       const thiz = this;
       this.$store.dispatch("leave/runTime", { id: id }).then((res) => {
@@ -208,10 +213,6 @@ export default {
     show__() {
       this.dialogVisible = true;
     },
-    listHistory__(){
-      this.historyVisible = true;
-
-    }
   },
 };
 </script>

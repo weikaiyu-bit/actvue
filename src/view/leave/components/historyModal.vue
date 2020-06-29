@@ -3,27 +3,28 @@
     title="批注历史"
     @close="close"
     :visible.sync="historyVisible"
-    width="30%"
+    size="40%"
   >
-    <el-form
-      :label-position="labelPosition"
-      label-width="80px"
-      :model="formLabelAlign"
-    >
-      <el-form-item label="请假原因">
-        <el-input v-model="formLabelAlign.reason"></el-input>
-      </el-form-item>
-      <el-form-item label="请假描述">
-        <el-input v-model="formLabelAlign.remarks"></el-input>
-      </el-form-item>
-      <el-form-item label="请假天数">
-        <el-input type="number" v-model="formLabelAlign.days"></el-input>
-      </el-form-item>
-    </el-form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="addOff__">取 消</el-button>
-      <el-button type="primary" @click="add__">确 定</el-button>
-    </span>
+    <el-timeline>
+    <el-timeline-item timestamp="2018/4/12" placement="top">
+      <el-card>
+        <h4>更新 Github 模板</h4>
+        <p>王小虎 提交于 2018/4/12 20:46</p>
+      </el-card>
+    </el-timeline-item>
+    <el-timeline-item timestamp="2018/4/3" placement="top">
+      <el-card>
+        <h4>更新 Github 模板</h4>
+        <p>王小虎 提交于 2018/4/3 20:46</p>
+      </el-card>
+    </el-timeline-item>
+    <el-timeline-item timestamp="2018/4/2" placement="top">
+      <el-card>
+        <h4>更新 Github 模板</h4>
+        <p>王小虎 提交于 2018/4/2 20:46</p>
+      </el-card>
+    </el-timeline-item>
+  </el-timeline>
   </el-drawer>
 </template>
 
@@ -54,30 +55,9 @@ export default {
   mounted() {
   },
   methods: {
-    add__() {
-      const thiz=this;
-      const id = window.localStorage.getItem("id");
-      this.formLabelAlign.days = parseFloat(this.formLabelAlign.days);
-      this.formLabelAlign.userId = parseInt(this.formLabelAlign.userId);
-      this.$store
-        .dispatch("leave/leaveAdd", this.formLabelAlign)
-        .then((res) => {
-          switch (res.code) {
-            case "SUCCESS":
-              thiz.$message({
-                message: "请假单填写成功",
-                type: "success",
-              });
-              thiz.close();
-              thiz.$store.dispatch("leave/findPage", { id: id });
-              break;
-            case "FAIL":
-              thiz.$message.error("错了哦，这是一条错误消息");
-              thiz.close();
-              break;
-          }
-        });
-    },
+   onHistory(id){
+      this.$store.dispatch("leave/listhistory", { id: id });
+   },
 
     addOff__() {
       this.historyoff__();

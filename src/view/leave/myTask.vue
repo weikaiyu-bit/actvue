@@ -119,7 +119,6 @@ export default {
     },
     click__(row) {
       const thiz = this;
-      window.console.log("rowrow", row);
       thiz.$router.push({
         name: "productlist",
         query: { id: row.id, cname: row.name },

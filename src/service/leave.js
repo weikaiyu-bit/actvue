@@ -63,6 +63,13 @@ export function serviceClaim(data) {
         ...data
     })
 }
+export function servicehistory(data) {
+    return request(`${profix}/listHistory`, {
+        methods: 'GET',
+        ...data
+    })
+}
+
 
 
 

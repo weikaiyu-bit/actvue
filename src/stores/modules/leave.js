@@ -1,7 +1,8 @@
 import {
   add, servicerunTime, serviceFindPage,
   serviceTask, serviceListInfo, serviceCompleteTask,
-  serviceClaim, serviceMyTask
+  serviceClaim, serviceMyTask,
+  servicehistory
 } from "@/service/leave";
 const state = () => ({
   items: [],
@@ -38,11 +39,21 @@ const mutations = {
   ListInfo(state, item) {
 
     state.listinfo = item
+  },
+  listhistory(state, item) {
+    console.log(state, item)
   }
 }
 
 // actions
 const actions = {
+  listhistory({ commit }, params) {
+    return servicehistory(params).then(res => {
+      commit("listhistory", params)
+      return res
+    })
+  },
+
   leaveAdd({ commit }, params) {
     return add(params).then(res => {
       commit("leaverun", params)
