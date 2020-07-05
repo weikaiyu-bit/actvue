@@ -11,12 +11,13 @@ export default function request(url, payload) {
         urlalter += k + "=" + payload[k] + "&"
       }
       urlalter = urlalter.split("GET&")[1];
-      return new Promise((resolve,reject)=>{
-      vm.$axios.get(url + "?" + urlalter.substring(0, urlalter.length - 1)).then(res => {
-        resolve(res.data);
-      }).catch(err => {
-        reject(err);
-      })
+      urlalter = urlalter.length != 0 ? "?" + urlalter : urlalter
+      return new Promise((resolve, reject) => {
+        vm.$axios.get(url + urlalter.substring(0, urlalter.length - 1)).then(res => {
+          resolve(res.data);
+        }).catch(err => {
+          reject(err);
+        })
       })
     case 'POST':
       if (payload.formData && payload.formData == 'form') {

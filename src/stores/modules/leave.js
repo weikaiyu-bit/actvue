@@ -2,7 +2,8 @@ import {
   add, servicerunTime, serviceFindPage,
   serviceTask, serviceListInfo, serviceCompleteTask,
   serviceClaim, serviceMyTask,
-  servicehistory
+  servicehistory,
+  servicedeleteRunTime
 } from "@/service/leave";
 const state = () => ({
   items: [],
@@ -68,7 +69,11 @@ const actions = {
     })
   },
 
-
+  deleteRunTime({ commit }, params) {
+    return servicedeleteRunTime(params).then(res => {
+      return res
+    })
+  },
   findPage({ commit }, params) {
     return serviceFindPage(params).then(res => {
       commit("findPage", res.data)

@@ -23,16 +23,24 @@
     <el-table :data="this.mytask">
       <el-table-column prop="id" label="id"> </el-table-column>
       <el-table-column prop="assignee" label="任务名称"> </el-table-column>
-      <el-table-column prop="name" label="处理人"> </el-table-column>
+      <el-table-column prop="name" label="处理人"></el-table-column>
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-divider direction="vertical"></el-divider>
           <el-tooltip content="办理任务" placement="top">
             <el-button type="text" size="small" @click="show__(scope.row)">
               办理任务
             </el-button>
           </el-tooltip>
+          <el-divider direction="vertical"></el-divider>
+          <el-popconfirm
+            title="确定要删除任务吗？"
+            @onConfirm="runTimeDelete(scope.row.id)"
+          >
+            <el-button slot="reference" type="text" size="small"
+              >删除</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -74,6 +82,23 @@ export default {
   methods: {
     cproperty__(id) {
       this.$router.push({ name: "cproperty", query: { id } });
+    },
+    runTimeDelete(taskId) {
+      const thiZ = this;
+      this.$store
+        .dispatch("leave/deleteRunTime", { taskId: taskId })
+        .then((res) => {
+          if (res.flag == true) {
+            this.$message({
+              message: "删除成功",
+              type: "success",
+            });
+
+            thiZ.list();
+          } else {
+            this.$message.error("删除失败，请先完成任务");
+          }
+        });
     },
     delete__(id) {
       const thiz = this;

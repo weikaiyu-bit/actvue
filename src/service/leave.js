@@ -17,7 +17,13 @@ export function servicerunTime(data) {
     })
 
 }
+export function servicedeleteRunTime(data) {
+    return request(`${profix}/deleteRunTime`, {
+        methods: 'GET',
+        ...data //必须结构
+    })
 
+}
 
 export function serviceFindPage(data) {
     return request(`${profix}/findPage`, {

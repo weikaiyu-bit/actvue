@@ -22,13 +22,13 @@
     </div>
     <el-table :data="this.tasks">
       <el-table-column prop="id" label="id"> </el-table-column>
-      <el-table-column prop="assignee" label="任务名称"> </el-table-column>
-      <el-table-column prop="name" label="处理人"> </el-table-column>
+      <el-table-column prop="assignee" label="任务节点"> </el-table-column>
+      <el-table-column prop="name" label="处理人"><el-tag type="warning">待认领</el-tag></el-table-column>
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-popconfirm title="你确定要拾取该任务吗？" @onConfirm="claim__(scope.row.id)">
-            <a href="#" slot="reference" >拾取</a>
+            <a href="#" slot="reference" >接收任务</a>
           </el-popconfirm>
           <el-divider direction="vertical"></el-divider>
         </template>

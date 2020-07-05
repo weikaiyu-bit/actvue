@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import leave from './modules/leave'
+import user from './modules/user'
+import role from './modules/role'
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
@@ -14,6 +16,8 @@ export default new Vuex.Store({
   },
 
   modules: {
-    leave
+    leave,
+    user,
+    role
   },
 })

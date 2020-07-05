@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Login from '@/view/home/login.vue'
 import Index from '@/view/home/index.vue'
 import Leave from '@/view/leave/index.vue'
+import User from '@/view/userManage/index.vue'
+import Role from '@/view/roleManage/index.vue'
 
 // import Olist from '@/view/home/olist.vue'
 Vue.use(Router);
@@ -17,6 +19,8 @@ const routes = [
             { path: '/power', name: 'power', component: Leave.Power, meta: { requireAuth: true } },
             { path: '/task', name: 'task', component: Leave.Task, meta: { requireAuth: true } },
             { path: '/mytask', name: 'mytask', component: Leave.MyTask, meta: { requireAuth: true } },
+            { path: '/user', name: 'user', component: User, meta: { requireAuth: true } },
+            { path: '/role', name: 'user', component: Role, meta: { requireAuth: true } },
         ]
     },
 
