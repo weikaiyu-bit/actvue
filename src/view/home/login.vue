@@ -185,8 +185,11 @@ body {
   border-radius: 10px;
   width: 350px;
   padding: 35px 35px 15px;
-  background: #fff;
+  /* background: #fff;
   border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #fde6e6; */
+  background: transparent;
+  border: 1px solid transparent;
   box-shadow: 0 0 25px #fde6e6;
 }
 label.el-checkbox.rememberme {

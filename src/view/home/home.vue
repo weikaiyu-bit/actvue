@@ -6,14 +6,24 @@
         <span>商场后台系统</span>
       </div>
       <div id="useImg">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-        <span>您好！{{this.username}}</span>
+        <el-avatar
+          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        ></el-avatar>
+        <span>您好！{{ this.username }}</span>
         <!-- @command：点击菜单项触发的事件回调 -->
         <el-dropdown @command="__command" trigger="click">
-          <span @click="flagcommand=!flagcommand" class="span">
+          <span @click="flagcommand = !flagcommand" class="span">
             <a href="#">
-              <i v-if="flagcommand==true" class="el-icon-arrow-up" style="color:white"></i>
-              <i v-else-if="flagcommand==false" class="el-icon-arrow-down" style="color:white"></i>
+              <i
+                v-if="flagcommand == true"
+                class="el-icon-arrow-up"
+                style="color:white"
+              ></i>
+              <i
+                v-else-if="flagcommand == false"
+                class="el-icon-arrow-down"
+                style="color:white"
+              ></i>
             </a>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -25,12 +35,20 @@
     </el-header>
     <el-container>
       <!-- 左侧栏 -->
-      <el-aside :width="isCollapse==true?'64px':'200px'">
+      <el-aside :width="isCollapse == true ? '64px' : '200px'">
         <div class="div">
-          <span @click="isCollapse=!isCollapse" class="span">
+          <span @click="isCollapse = !isCollapse" class="span">
             <a href="#">
-              <i v-if="isCollapse==true" class="el-icon-s-unfold" style="color:white"></i>
-              <i v-else-if="isCollapse==false" class="el-icon-s-fold" style="color:white"></i>
+              <i
+                v-if="isCollapse == true"
+                class="el-icon-s-unfold"
+                style="color:white"
+              ></i>
+              <i
+                v-else-if="isCollapse == false"
+                class="el-icon-s-fold"
+                style="color:white"
+              ></i>
             </a>
           </span>
         </div>
@@ -44,25 +62,25 @@
           :default-active="activePath"
         >
           <!-- 一级菜单 -->
-          <el-submenu :index="s.id" v-for=" (s,idx) in fatherAside" :key="s.id">
+          <el-submenu :index="s.id" v-for="(s, idx) in fatherAside" :key="s.id">
             <template slot="title">
               <!-- 图标 -->
               <i :class="jconObj[idx].id"></i>
               <!-- 导航 -->
-              <span>{{s.name}}</span>
+              <span>{{ s.name }}</span>
             </template>
             <!--   sonAside: [ { id: "1-1", name: "新增套餐" }]  -->
             <el-menu-item
-              :index="'/'+son.path"
+              :index="'/' + son.path"
               v-for="son in s.sonAside"
               :key="son.id"
-              @click="saveNav('/'+son.path)"
+              @click="saveNav('/' + son.path)"
             >
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-success"></i>
                 <!-- 导航 -->
-                <span>{{son.name}}</span>
+                <span>{{ son.name }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -91,7 +109,7 @@ import {
   Main,
   Footer,
   Button,
-  Avatar
+  Avatar,
 } from "element-ui";
 import indexData from "@/util/indexData";
 Vue.use(container)
@@ -109,7 +127,7 @@ export default {
     },
     jconObj: () => {
       return indexData.jconObj;
-    }
+    },
   },
   data() {
     return {
@@ -118,14 +136,14 @@ export default {
       //显示隐藏菜单栏
       isCollapse: false,
       flagcommand: false,
-      username:'',
+      username: "",
     };
   },
   created() {
     this.activePath = window.sessionStorage.getItem("params");
   },
   mounted() {
-  this.username=  window.localStorage.getItem("name");
+    this.username = window.localStorage.getItem("name");
   },
   methods: {
     __command(params) {
@@ -144,10 +162,10 @@ export default {
       window.sessionStorage.setItem("params", params);
       this.activePath = window.sessionStorage.getItem("params");
     },
-  }
+  },
 };
 </script>
-<style  scoped>
+<style scoped>
 #app .home-container {
   height: 100%;
 }
@@ -181,7 +199,9 @@ export default {
 .el-aside > div {
   text-align: center;
   height: 40px;
-  background-color: #003666;
+  /* background-color: #003666;
+   */
+  background-color: #333744;
 }
 /* .el-aside .el-menu {
   position: relative;
