@@ -1,40 +1,33 @@
 <template>
-  <el-drawer
-    title="批注历史"
-    @close="close"
-    :visible.sync="historyVisible"
-    size="40%"
-  >
-    <el-timeline>
-    <el-timeline-item timestamp="2018/4/12" placement="top">
-      <el-card>
-        <h4>更新 Github 模板</h4>
-        <p>王小虎 提交于 2018/4/12 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/3" placement="top">
-      <el-card>
-        <h4>更新 Github 模板</h4>
-        <p>王小虎 提交于 2018/4/3 20:46</p>
-      </el-card>
-    </el-timeline-item>
-    <el-timeline-item timestamp="2018/4/2" placement="top">
-      <el-card>
-        <h4>更新 Github 模板</h4>
-        <p>王小虎 提交于 2018/4/2 20:46</p>
-      </el-card>
-    </el-timeline-item>
-  </el-timeline>
+  <el-drawer title="批注历史" @close="close" :visible.sync="historyVisible" size="40%">
+    <el-card>
+    <el-timeline :reverse="true">
+      <el-timeline-item :icon="el-icon-more" color="#0bbd87" :timestamp="history.startTime" placement="top" v-for="(history,index) in historyData" :key="index">
+        <el-card>
+          <h4 v-if="index==0" :class="{startStyle:true}">{{history.assignee}}{{history.activityName}}</h4>
+          <h4 v-else-if="index!=0&&index!=historyData.length-1">{{history.assignee}}{{history.activityName}}</h4>
+          <h4 v-else-if="index==historyData.length-1" :class="{endStyle:true}">{{history.assignee}}{{history.activityName}}</h4>
+          <p>{{history.assignee}} 提交于 {{history.endTime}}</p>
+        </el-card>
+        
+      </el-timeline-item>
+    </el-timeline>
+    </el-card>
   </el-drawer>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: {
     historyVisible: Boolean,
-    historyoff__: Function,
+    historyoff__: Function
   },
-
+  computed: {
+    ...mapState({
+      historyData: state => state.leave.historyData
+    })
+  },
   data() {
     /**
      * 请假状态值：
@@ -48,23 +41,30 @@ export default {
         days: "",
         status: "0", //提交审核 0      审核中 1
         name: window.localStorage.getItem("name"),
-        userId: window.localStorage.getItem("id"),
-      },
+        userId: window.localStorage.getItem("id")
+      }
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-   onHistory(id){
+    onHistory(id) {
       this.$store.dispatch("leave/listhistory", { id: id });
-   },
+    },
 
     addOff__() {
       this.historyoff__();
     },
     close() {
       this.historyoff__();
-    },
-  },
+    }
+  }
 };
 </script>
+<style scoped>
+.startStyle{
+  color:green
+}
+.endStyle{
+  color: brown;
+}
+</style>

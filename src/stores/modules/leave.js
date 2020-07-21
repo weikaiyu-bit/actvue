@@ -12,7 +12,8 @@ const state = () => ({
   tableData: [],
   tasks: [],
   listinfo: [],
-  mytask: []
+  mytask: [],
+  historyData: []
 })
 
 // getters
@@ -42,7 +43,7 @@ const mutations = {
     state.listinfo = item
   },
   listhistory(state, item) {
-    console.log(state, item)
+    state.historyData = item
   }
 }
 
@@ -50,7 +51,7 @@ const mutations = {
 const actions = {
   listhistory({ commit }, params) {
     return servicehistory(params).then(res => {
-      commit("listhistory", params)
+      commit("listhistory", res.data)
       return res
     })
   },

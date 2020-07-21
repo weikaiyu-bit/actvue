@@ -2,28 +2,18 @@
   <el-container class="home-container">
     <!-- 导航栏 -->
     <el-header>
-      <div style="width:200px;height:60px;background:#008DF7">
+      <div style="width:200px;height:60px;background:#0270c1">
         <span>商场后台系统</span>
       </div>
       <div id="useImg">
-        <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        ></el-avatar>
+        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
         <span>您好！{{ this.username }}</span>
         <!-- @command：点击菜单项触发的事件回调 -->
         <el-dropdown @command="__command" trigger="click">
           <span @click="flagcommand = !flagcommand" class="span">
             <a href="#">
-              <i
-                v-if="flagcommand == true"
-                class="el-icon-arrow-up"
-                style="color:white"
-              ></i>
-              <i
-                v-else-if="flagcommand == false"
-                class="el-icon-arrow-down"
-                style="color:white"
-              ></i>
+              <i v-if="flagcommand == true" class="el-icon-arrow-up" style="color:white"></i>
+              <i v-else-if="flagcommand == false" class="el-icon-arrow-down" style="color:white"></i>
             </a>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -39,22 +29,14 @@
         <div class="div">
           <span @click="isCollapse = !isCollapse" class="span">
             <a href="#">
-              <i
-                v-if="isCollapse == true"
-                class="el-icon-s-unfold"
-                style="color:white"
-              ></i>
-              <i
-                v-else-if="isCollapse == false"
-                class="el-icon-s-fold"
-                style="color:white"
-              ></i>
+              <i v-if="isCollapse == true" class="el-icon-s-unfold" style="color:white"></i>
+              <i v-else-if="isCollapse == false" class="el-icon-s-fold" style="color:white"></i>
             </a>
           </span>
         </div>
         <el-menu
           text-color="#fff"
-          background-color="#333744"
+          background-color="#001529"
           active-text-color="#409EFF"
           :unique-opened="true"
           :collapse="isCollapse"
@@ -109,7 +91,7 @@ import {
   Main,
   Footer,
   Button,
-  Avatar,
+  Avatar
 } from "element-ui";
 import indexData from "@/util/indexData";
 Vue.use(container)
@@ -127,7 +109,7 @@ export default {
     },
     jconObj: () => {
       return indexData.jconObj;
-    },
+    }
   },
   data() {
     return {
@@ -136,7 +118,7 @@ export default {
       //显示隐藏菜单栏
       isCollapse: false,
       flagcommand: false,
-      username: "",
+      username: ""
     };
   },
   created() {
@@ -161,8 +143,8 @@ export default {
       //保存链接的激活状态
       window.sessionStorage.setItem("params", params);
       this.activePath = window.sessionStorage.getItem("params");
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -191,7 +173,7 @@ export default {
   height: 60px;
 }
 .el-aside {
-  background-color: #333744;
+  background-color: #001529;
   /* .el-menu {
     border-right: none;
   } */
@@ -201,7 +183,7 @@ export default {
   height: 40px;
   /* background-color: #003666;
    */
-  background-color: #333744;
+  background-color: #001529;
 }
 /* .el-aside .el-menu {
   position: relative;
@@ -219,7 +201,8 @@ export default {
   background-color: #f6f9fc;
 }
 .el-footer {
-  background-color: #373d41;
+  /* background-color: #373d41; */
+  background-color: #404040;
   text-align: center;
   font-size: 22px;
   color: #f6f9fc;

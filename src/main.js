@@ -15,8 +15,9 @@ axios.defaults.baseURL = '/api'  //关键代码
 Vue.prototype.$axios = axios
   .create({
     //请求前处理数据
-    baseURL: 'http://localhost:8082',
+    baseURL: 'http://10.168.1.99:8211',
     // baseURL: 'http://andwky.cn:8001',
+    // baseURL: 'http://localhost:8211',
     //请求等待超时时间则中
     timeout: 100000,
     //请求后的data处理
