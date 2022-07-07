@@ -11,7 +11,7 @@
     "core-js": "^3.4.4",
     "element-ui": "^2.13.0",
     "lib-flexible": "^0.3.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "postcss-pxtorem": "^4.0.1",
     "px2rem-loader": "^0.1.9",
     "vue": "^2.6.10",
